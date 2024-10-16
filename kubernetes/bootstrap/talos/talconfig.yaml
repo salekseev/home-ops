@@ -26,7 +26,7 @@ nodes:
   - hostname: "k8s-optiplex-5090"
     ipAddress: "192.168.1.5"
     installDiskSelector:
-      serial: "BC711 NVMe SK hynix 256GB"
+      serial: "CDA5N50811130595I"
     talosImageURL: factory.talos.dev/installer/52bb8f582a7d8edb68b922f4b5bfbf0bfc5db2ec3318e2c3058f0d8533057c8b
     controlPlane: true
     networkInterfaces:
