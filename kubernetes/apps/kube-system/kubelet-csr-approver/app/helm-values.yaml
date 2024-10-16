@@ -1,0 +1,3 @@
+---
+providerRegex: ^(k8s-optiplex-5090)$
+bypassDnsResolution: true
