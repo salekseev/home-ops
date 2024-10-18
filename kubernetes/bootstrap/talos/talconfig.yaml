@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-talosVersion: v1.8.1
+talosVersion: v1.8.0
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.31.1
 
@@ -24,33 +24,47 @@ cniConfig:
 
 nodes:
   - hostname: "k8s-optiplex-5090"
-    ipAddress: "192.168.1.5"
+    ipAddress: "192.168.1.221"
     installDiskSelector:
       serial: "CDA5N50811130595I"
-    talosImageURL: factory.talos.dev/installer/52bb8f582a7d8edb68b922f4b5bfbf0bfc5db2ec3318e2c3058f0d8533057c8b
+    machineSpec:
+      secureboot: true
+      useUKI: true
+    talosImageURL: factory.talos.dev/installer-secureboot/a13c1e1cdb9e135b5ae8ca3e977a5bee91bb4a503493d9204b6433239f462799
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "00:e0:4c:68:06:e9"
-        dhcp: false
-        addresses:
-          - "192.168.1.5/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "192.168.1.1"
+        dhcp: true
         mtu: 1500
         vip:
           ip: "192.168.1.241"
 
 # Global patches
 patches:
+  - # Encrypt system disk with TPM
+    |-
+    machine:
+      systemDiskEncryption:
+        ephemeral:
+          provider: luks2
+          keys:
+            - slot: 0
+              tpm: {}
+        state:
+          provider: luks2
+          keys:
+            - slot: 0
+              tpm: {}
   - "@./patches/global/cluster-discovery.yaml"
   - "@./patches/global/containerd.yaml"
   - "@./patches/global/disable-search-domain.yaml"
   - "@./patches/global/hostdns.yaml"
   - "@./patches/global/kubelet.yaml"
+  - "@./patches/global/nfsmount.yaml"
   - "@./patches/global/openebs-local.yaml"
   - "@./patches/global/sysctl.yaml"
+  - "@./patches/global/tpm-disk-encryption.yaml"
 
 # Controller patches
 controlPlane:
@@ -59,4 +73,3 @@ controlPlane:
     - "@./patches/controller/cluster.yaml"
     - "@./patches/controller/disable-admission-controller.yaml"
     - "@./patches/controller/etcd.yaml"
-

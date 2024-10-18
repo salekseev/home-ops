@@ -40,7 +40,7 @@ tasks:
     desc: Upgrade Talos on a node
     dir: '{{.KUBERNETES_DIR}}/bootstrap/talos'
     cmds:
-      - talosctl --nodes {{.NODE}} upgrade --image="factory.talos.dev/installer/{{.TALOS_SCHEMATIC_ID}}:{{.VERSION}}" --timeout=10m --reboot-mode={{.MODE}}
+      - talosctl --nodes {{.NODE}} upgrade --image="factory.talos.dev/installer-secureboot/{{.TALOS_SCHEMATIC_ID}}:{{.VERSION}}" --timeout=10m --reboot-mode={{.MODE}}
       - talosctl --nodes {{.NODE}} health --wait-timeout=10m --server=false
     vars:
       MODE: '{{.MODE | default "default"}}'
