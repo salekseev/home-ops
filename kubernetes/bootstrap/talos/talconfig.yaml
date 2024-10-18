@@ -39,23 +39,11 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.1.241"
+    patches:
+      - "@./patches/k8s-optiplex-5090/topology.yaml"
 
 # Global patches
 patches:
-  - # Encrypt system disk with TPM
-    |-
-    machine:
-      systemDiskEncryption:
-        ephemeral:
-          provider: luks2
-          keys:
-            - slot: 0
-              tpm: {}
-        state:
-          provider: luks2
-          keys:
-            - slot: 0
-              tpm: {}
   - "@./patches/global/cluster-discovery.yaml"
   - "@./patches/global/containerd.yaml"
   - "@./patches/global/disable-search-domain.yaml"
@@ -65,6 +53,7 @@ patches:
   - "@./patches/global/openebs-local.yaml"
   - "@./patches/global/sysctl.yaml"
   - "@./patches/global/tpm-disk-encryption.yaml"
+  - "@./patches/global/udev.yaml"
 
 # Controller patches
 controlPlane:
